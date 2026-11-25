@@ -55,3 +55,83 @@ def load_sms():
     import pandas as pd
 
     return pd.read_csv(_ensure(SMS_FILE), compression="gzip", keep_default_na=False)
+
+
+# ---------------------------------------------------------------------------
+# Text preprocessing (built step by step in notebook 02 and reused afterwards)
+# ---------------------------------------------------------------------------
+import re
+from functools import lru_cache
+
+URL_RE = re.compile(r"https?://\S+|www\.\S+")
+EMAIL_RE = re.compile(r"\S+@\S+\.\S+")
+NUMBER_RE = re.compile(r"\d+(?:[.,]\d+)*")
+NON_LETTER_RE = re.compile(r"[^A-Za-z\s]")
+SPACES_RE = re.compile(r"\s+")
+
+
+def clean_text(text: str) -> str:
+    """Remove URLs, e-mail addresses, numbers and every non-letter character."""
+    text = URL_RE.sub(" ", text)
+    text = EMAIL_RE.sub(" ", text)
+    text = NUMBER_RE.sub(" ", text)
+    text = NON_LETTER_RE.sub(" ", text)
+    return SPACES_RE.sub(" ", text).strip()
+
+
+@lru_cache(maxsize=1)
+def _stopwords() -> frozenset:
+    setup_nltk()
+    from nltk.corpus import stopwords
+
+    return frozenset(stopwords.words("english"))
+
+
+@lru_cache(maxsize=200_000)
+def _lemma(token: str) -> str:
+    lem = _lemmatizer()
+    return lem.lemmatize(lem.lemmatize(token, pos="n"), pos="v")
+
+
+@lru_cache(maxsize=1)
+def _lemmatizer():
+    setup_nltk()
+    from nltk.stem import WordNetLemmatizer
+
+    return WordNetLemmatizer()
+
+
+@lru_cache(maxsize=1)
+def _stemmer():
+    from nltk.stem import PorterStemmer
+
+    return PorterStemmer()
+
+
+def preprocess(text: str, lowercase: bool = True, remove_stopwords: bool = True,
+               normalize: str | None = "lemma", min_len: int = 2,
+               keep: frozenset | set = frozenset()) -> list[str]:
+    """Clean -> lowercase -> tokenize -> drop stopwords/short tokens -> lemma or stem.
+
+    normalize: "lemma" (WordNet, noun then verb), "stem" (Porter) or None.
+    keep: words that must survive stopword removal (e.g. {"not", "no"}).
+    """
+    setup_nltk()
+    from nltk.tokenize import word_tokenize
+
+    text = clean_text(text)
+    if lowercase:
+        text = text.lower()
+    tokens = word_tokenize(text)
+    if remove_stopwords:
+        stops = _stopwords()
+        tokens = [t for t in tokens if t.lower() not in stops or t.lower() in keep]
+    tokens = [t for t in tokens if len(t) >= min_len]
+    if normalize == "lemma":
+        tokens = [_lemma(t) for t in tokens]
+    elif normalize == "stem":
+        stem = _stemmer().stem
+        tokens = [stem(t) for t in tokens]
+    elif normalize is not None:
+        raise ValueError("normalize must be 'lemma', 'stem' or None")
+    return tokens
