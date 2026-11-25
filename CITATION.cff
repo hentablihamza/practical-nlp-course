@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+title: "Practical NLP: a hands-on course in classical natural language processing"
+message: "If you use these materials, please cite them using the metadata below."
+type: software
+authors:
+  - family-names: Hentabli
+    given-names: Hamza
+    orcid: "https://orcid.org/0000-0002-9530-2815"
+repository-code: "https://github.com/hentablihamza/practical-nlp-course"
+url: "https://github.com/hentablihamza/practical-nlp-course"
+abstract: >
+  A hands-on, 12-notebook Jupyter course in classical natural language processing:
+  text preprocessing, one-hot and Bag-of-Words, term frequency and TF-IDF, n-grams,
+  document similarity, LSA, word2vec and GloVe embeddings, and classic machine-learning
+  text classification with proper evaluation. Used for teaching Master 1 students at the
+  University of Médéa (2022-2023). Every notebook runs in Google Colab and offline from
+  cached data.
+keywords:
+  - natural language processing
+  - NLP
+  - text preprocessing
+  - bag of words
+  - TF-IDF
+  - word2vec
+  - GloVe
+  - text classification
+  - scikit-learn
+  - NLTK
+  - education
+  - tutorial
+date-released: "2026-11-25"

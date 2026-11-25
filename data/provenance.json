@@ -1,0 +1,45 @@
+{
+  "generated_on": "2026-11-25",
+  "nltk_resources": {
+    "resources": [
+      "punkt_tab",
+      "stopwords",
+      "wordnet"
+    ],
+    "source": "NLTK Data (https://www.nltk.org/nltk_data/)",
+    "local_path": "data/nltk_data/"
+  },
+  "20newsgroups_4cat": {
+    "source": "20 Newsgroups, bydate version (http://qwone.com/~jason/20Newsgroups/), same archive sklearn.datasets.fetch_20newsgroups downloads",
+    "attribution": "Collected by Ken Lang (Lang, 1995, 'NewsWeeder: Learning to Filter Netnews').",
+    "categories": [
+      "rec.sport.baseball",
+      "sci.space",
+      "comp.graphics",
+      "talk.politics.misc"
+    ],
+    "preprocessing": "headers, footers and quoted replies removed",
+    "local_path": "data/20newsgroups_4cat.csv.gz",
+    "n_documents": 3729,
+    "by_subset": {
+      "train": 2239,
+      "test": 1490
+    },
+    "by_category": {
+      "rec.sport.baseball": 994,
+      "sci.space": 987,
+      "comp.graphics": 973,
+      "talk.politics.misc": 775
+    }
+  },
+  "sms_spam": {
+    "source": "UCI Machine Learning Repository, SMS Spam Collection (https://archive.ics.uci.edu/static/public/228/sms+spam+collection.zip)",
+    "attribution": "Almeida, T.A., Gomez Hidalgo, J.M., Yamakami, A. (2011). Contributions to the Study of SMS Spam Filtering. ACM DocEng'11.",
+    "local_path": "data/sms_spam.csv.gz",
+    "n_messages": 5574,
+    "by_label": {
+      "ham": 4827,
+      "spam": 747
+    }
+  }
+}
